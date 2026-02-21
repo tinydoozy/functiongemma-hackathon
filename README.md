@@ -40,6 +40,31 @@
 - Leaderboard will start accepting submissions once event starts. 
 - The top 10 in each location will make it to judging.
 
+## Codebase Tour (for newcomers)
+
+This repository is intentionally small and centered around one customization point:
+
+- `main.py` contains the **runtime logic** for three generation modes:
+  - `generate_cactus`: local/on-device FunctionGemma via Cactus.
+  - `generate_cloud`: cloud fallback using Gemini Flash.
+  - `generate_hybrid`: the strategy router that decides local vs cloud.
+- `benchmark.py` is your **offline evaluator**. It defines tool schemas + benchmark prompts and computes F1, latency, and on-device ratio.
+- `submit.py` is your **leaderboard client**. It uploads `main.py` and polls for official server-side results.
+- `assets/banner.png` is branding only.
+
+If you are contributing, start by improving `generate_hybrid` in `main.py`, then run `python benchmark.py` to compare score tradeoffs before submitting.
+
+For team collaboration/handoffs (e.g., frontend + prompting updates that need backend merge), use `TEAM_HANDOFF.md` as the shared running log and merge guide.
+
+
+## Run the demo
+
+Run the Streamlit frontend for the voice-to-calendar demo:
+
+```bash
+streamlit run app.py
+```
+
 ## Qualitative Judging 
 - **Rubric 1**: The quality of your hybrid routing algorithm, depth and cleverness.
 - **Rubric 2**: End-to-end products that execute function calls to solve real-world problems. 
